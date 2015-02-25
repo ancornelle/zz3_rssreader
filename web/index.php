@@ -8,4 +8,4 @@
 
 require_once __DIR__.'/../app/app.php';
 
-echo "Hello World !";
+echo 'Hello World';
