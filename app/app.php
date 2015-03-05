@@ -11,10 +11,10 @@
     $app = new Silex\Application();
 
     // ... definitions
-    $app->get('/hello/{name}', function($name) use($app) {
-        return 'Hello !!! '.$app->escape($name);
-    });
+//    $app->get('/hello/{name}', function($name) use($app) {
+//        return 'Hello !!! '.$app->escape($name);
+//    });
 
-    $app->get('/index.php');
+//    $app->get('/index.php');
 
-    $app->run();
+//    $app->run();
