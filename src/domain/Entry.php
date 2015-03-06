@@ -8,12 +8,12 @@
 
 class Entry {
 
-    const tableName = entry;
+    const tableName = 'entry';
     /*
      * String
      * guid or id
      */
-    public $entryId;
+    public $entryId = null;
 
     public $entryTitle;
 
@@ -37,52 +37,56 @@ class Entry {
      */
     public $entryUpdatedDate;
 
-    public function save(Connection $pCon)
+    public function save(PDO $pCon)
     {
-        if ($this->isNew())
+        if ($this->isNew($pCon))
         {
-            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' VALUES (:id,:title,:feed,:content,:url,:date)');
-            $stmt->bindValues(':id',$this->entryId);
-            $stmt->bindValues(':title',$this->entryTitle);
-            $stmt->bindValues(':content',$this->entryContent);
-            $stmt->bindValues(':feed',$this->entryFeed);
-            $stmt->bindValues(':url',$this->entryUrl);
-            $stmt->bindValues(':date',$this->entryUpdatedDate);
+            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' (entryId, entryTitle, entryFeed, entryContent, entryUrl, entryUpdatedDate) VALUES (:id,:title,:feed,:content,:url,:date)');
+            $stmt->bindValue('id',$this->entryId);
+            $stmt->bindValue('title',$this->entryTitle);
+            $stmt->bindValue('content',$this->entryContent);
+            $stmt->bindValue('feed',$this->entryFeed);
+            $stmt->bindValue('url',$this->entryUrl);
+            $stmt->bindValue('date',$this->entryUpdatedDate);
         }
         else
         {
             $stmt = $pCon->prepare('UPDATE '.self::tableName.' SET entryTitle = :title, entryContent = :content, entryFeed = :feed, entryUrl = :url, entryUpdatedDate = :date WHERE entryId = :id');
-            $stmt->bindValues(':id',$this->entryId);
-            $stmt->bindValues(':title',$this->entryTitle);
-            $stmt->bindValues(':content',$this->entryContent);
-            $stmt->bindValues(':feed',$this->entryFeed);
-            $stmt->bindValues(':url',$this->entryUrl);
-            $stmt->bindValues(':date',$this->entryUpdatedDate);
+            $stmt->bindValue('id',$this->entryId);
+            $stmt->bindValue('title',$this->entryTitle);
+            $stmt->bindValue('content',$this->entryContent);
+            $stmt->bindValue('feed',$this->entryFeed);
+            $stmt->bindValue('url',$this->entryUrl);
+            $stmt->bindValue('date',$this->entryUpdatedDate);
         }
-        $stmt->execute();
+        return $stmt->execute();
     }
 
-    public function delete(Connection $pCon)
+    public function delete(PDO $pCon)
     {
         $stmt = $pCon->prepare('DELETE FROM '.self::tableName.' WHERE entryId = :id');
         $stmt->bindValue(':id',$this->entryId);
+        $stmt->execute();
     }
 
-    public function isNew()
+    public function isNew($pCon)
     {
-        return null === $this->entryId;
+        $stmt = $pCon->prepare('SELECT entryId FROM '.self::tableName.' WHERE entryId = :id');
+        $stmt->bindValue(':id',$this->entryId);
+        $stmt->execute();
+        return [] === $stmt->fetchAll();
     }
 
     public function findAll($pCon)
     {
-        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName);
+        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' LIMIT 10');
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function findAllByFeedId($pCon, $pFeedId)
     {
-        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' WHERE entryFeed = :feed');
+        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' WHERE entryFeed = :feed LIMIT 10');
         $stmt->bindValue(':feed',$pFeedId);
         $stmt->execute();
         return $stmt->fetchAll();

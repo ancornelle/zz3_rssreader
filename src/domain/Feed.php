@@ -8,7 +8,7 @@
 
 class Feed {
 
-    const tableName = feed;
+    const tableName = 'feed';
 
     public $feedId;
 
@@ -20,9 +20,9 @@ class Feed {
      */
     public $feedDescription;
 
-    public $FeedUrl;
+    public $feedUrl;
 
-    public $FeedCategory;
+    public $feedCategory;
 
     /*
      * Date
@@ -30,40 +30,44 @@ class Feed {
      */
     public $feedUpdatedDate;
 
-    public function save(Connection $pCon)
+    public function save(PDO $pCon)
     {
-        if ($this->isNew())
+        if ($this->isNew($pCon))
         {
-            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' VALUES (:id,:title,:description,:url,:category,:date)');
-            $stmt->bindValues(':id',$this->feedId);
-            $stmt->bindValues(':title',$this->feedTitle);
-            $stmt->bindValues(':description',$this->feedDescription);
-            $stmt->bindValues(':category',$this->feedCategory);
-            $stmt->bindValues(':url',$this->feedUrl);
-            $stmt->bindValues(':date',$this->feedUpdatedDate);
+            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' (feedId, feedTitle, feedDescription, feedUrl, feedCategory, feedUpdatedDate) VALUES (:id,:title,:description,:url,:category,:date)');
+            $stmt->bindValue('id',$this->feedId,PDO::PARAM_STR);
+            $stmt->bindValue('title',$this->feedTitle,PDO::PARAM_STR);
+            $stmt->bindValue('description',$this->feedDescription,PDO::PARAM_STR);
+            $stmt->bindValue('category',$this->feedCategory,PDO::PARAM_INT);
+            $stmt->bindValue('url',$this->feedUrl,PDO::PARAM_STR);
+            $stmt->bindValue('date',$this->feedUpdatedDate,PDO::PARAM_STR);
         }
         else
         {
             $stmt = $pCon->prepare('UPDATE '.self::tableName.' SET feedTitle = :title, feedDescription = :description, feedCategory = :category, feedUrl = :url, feedUpdatedDate = :date WHERE feedId = :id');
-            $stmt->bindValues(':id',$this->feedId);
-            $stmt->bindValues(':title',$this->feedTitle);
-            $stmt->bindValues(':description',$this->feedDescription);
-            $stmt->bindValues(':category',$this->feedCategory);
-            $stmt->bindValues(':url',$this->feedUrl);
-            $stmt->bindValues(':date',$this->feedUpdatedDate);
+            $stmt->bindValue('id',$this->feedId);
+            $stmt->bindValue('title',$this->feedTitle);
+            $stmt->bindValue('description',$this->feedDescription);
+            $stmt->bindValue('category',$this->feedCategory);
+            $stmt->bindValue('url',$this->feedUrl);
+            $stmt->bindValue('date',$this->feedUpdatedDate);
         }
-        $stmt->execute();
+        return $stmt->execute();
     }
 
-    public function delete(Connection $pCon)
+    public function delete(PDO $pCon)
     {
         $stmt = $pCon->prepare('DELETE FROM '.self::tableName.' WHERE feedId = :id');
         $stmt->bindValue(':id',$this->feedId);
+        $stmt->execute();
     }
 
-    public function isNew()
+    public function isNew($pCon)
     {
-        return null === $this->feedId;
+        $stmt = $pCon->prepare('SELECT feedId FROM '.self::tableName.' WHERE feedId = :id');
+        $stmt->bindValue(':id',$this->feedId);
+        $stmt->execute();
+        return [] === $stmt->fetchAll();
     }
 
     public function findAll($pCon)

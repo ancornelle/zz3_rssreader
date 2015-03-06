@@ -8,7 +8,7 @@
 
 class Category {
 
-    const tableName = category;
+    const tableName = 'category';
 
     public $categoryId;
 
@@ -16,26 +16,27 @@ class Category {
 
     public $feeds = array();
 
-    public function save(Connection $pCon)
+    public function save(PDO $pCon)
     {
         if ($this->isNew())
         {
             $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' VALUES (:name)');
-            $stmt->bindValues(':name',$this->categoryName);
+            $stmt->bindValue(':name',$this->categoryName);
         }
         else
         {
             $stmt = $pCon->prepare('UPDATE '.self::tableName.' SET categoryName = :name WHERE categoryId = :id');
-            $stmt->bindValues(':name',$this->categoryName);
-            $stmt->bindValues(':id',$this->categoryId);
+            $stmt->bindValue(':name',$this->categoryName);
+            $stmt->bindValue(':id',$this->categoryId);
         }
         $stmt->execute();
     }
 
-    public function delete(Connection $pCon)
+    public function delete(PDO $pCon)
     {
         $stmt = $pCon->prepare('DELETE FROM '.self::tableName.' WHERE categoryId = :id');
         $stmt->bindValue(':id',$this->categoryId);
+        $stmt->execute();
     }
 
     public function isNew()

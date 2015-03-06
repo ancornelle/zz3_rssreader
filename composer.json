@@ -11,7 +11,8 @@
   ],
   "require": {
     "silex/silex": "v1.2.3",
-    "zelenin/rssget": "dev-master"
+    "zelenin/rssget": "dev-master",
+    "neitanod/forceutf8": "v1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "4.5.*"
