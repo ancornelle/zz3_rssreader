@@ -24,23 +24,21 @@ function parseRSSByEntry($pEntryUrl)
     $feed->feedTitle = $channel['title'];
     $feed->feedUrl = $channel['link'];
     $feed->feedUpdatedDate = $channel['pubDate'];
-    array_key_exists('description',$channel) ? $feed->feedDescription = $channel['description'] : $feed->feedDescription = '';
-    $feed->feedCategory = 1;
+    array_key_exists('description',$channel) ? $feed->feedDescription = $channel['description'] : $feed->feedDescription = 'No Description';
     $feed->save(Connection::getPDO());
 
     $items = $rssget_rss->getItems();
-    // Le monde est très mal encodé...
-    $items = Encoding::toWin1252($items);
+    $items = Encoding::toUTF8($items);
     foreach ($items as $item)
     {
         $entry = new Entry();
-        echo '<pre>';
-        $entry->entryTitle = $item['title'];
+        array_key_exists('title',$item) ? $entry->entryTitle = $item['title'] : $entry->entryCategory = 'No Title';
         $entry->entryUrl = $item['link'];
-        $entry->entryFeed = 0;
+        $entry->entryFeed = $feed->feedId;
+        array_key_exists('category',$item) ? $entry->entryCategory = $item['category'] : $entry->entryCategory = 'No Category';
         $entry->entryId = $item['guid'];
-        $entry->entryContent = $item['description'];
-        $entry->entryUpdatedDate = $item['pubDate'];
+        array_key_exists('description',$item) ?  $entry->entryContent = $item['description'] : $entry->entryCategory = 'No Description';
+        array_key_exists('pubDate',$item) ? $entry->entryUpdatedDate = $item['pubDate'] : $entry->entryCategory = 'No Date';
         $entry->save(Connection::getPDO());
     }
 
@@ -49,27 +47,27 @@ function parseRSSByEntry($pEntryUrl)
 function parseAtomByEntry($pEntryUrl)
 {
     $rssget_atom = new \Zelenin\RSSGet($pEntryUrl);
-
     $channel = $rssget_atom->getChannel();
     $feed = new Feed();
     $feed->feedId = $channel['id'];
     $feed->feedTitle = $channel['title'];
     $feed->feedUrl = $channel['link_href'];
     $feed->feedUpdatedDate = $channel['updated'];
-    array_key_exists('description',$channel) ? $feed->feedDescription = $channel['description'] : $feed->feedDescription = '';
-    $feed->feedCategory = 1;
+    array_key_exists('description',$channel) ? $feed->feedDescription = $channel['description'] : $feed->feedDescription = 'No Description';
     $feed->save(Connection::getPDO());
 
     $items = $rssget_atom->getItems();
+    $items = Encoding::toUTF8($items);
     foreach ($items as $item)
     {
         $entry = new Entry();
-        $entry->entryTitle = $item['title'];
+        array_key_exists('title',$item) ? $entry->entryTitle = $item['title'] : $entry->entryCategory = 'No Title';
         $entry->entryUrl = $item['link_href'];
-        $entry->entryFeed = 0;
+        $entry->entryFeed = $feed->feedId;
+        array_key_exists('category',$item) ? $entry->entryCategory = $item['category'] : $entry->entryCategory = 'No Category';
         $entry->entryId = $item['id'];
-        $entry->entryContent = $item['content'];
-        $entry->entryUpdatedDate = $item['updated'];
+        array_key_exists('content',$item) ? $entry->entryContent = $item['content'] : $entry->entryCategory = 'No Content';
+        array_key_exists('updated',$item) ? $entry->entryUpdatedDate = $item['updated'] : $entry->entryCategory = 'No Date';
         $entry->save(Connection::getPDO());
     }
 }
