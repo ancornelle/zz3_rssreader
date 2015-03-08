@@ -83,7 +83,7 @@ class Entry {
 
     public function findAll($pCon)
     {
-        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' LIMIT 10');
+        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' LIMIT 20');
         $stmt->execute();
         return $stmt->fetchAll();
     }

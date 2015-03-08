@@ -10,8 +10,8 @@ require_once __DIR__.'/../app/app.php';
 require_once __DIR__.'/../src/crawler/Crawler.php';
 
 parseRSSByEntry('https://news.google.com/news/feeds?pz=1&cf=all&ned=us&hl=en&topic=h&num=5&output=rss');
-////parseRSSByEntry('http://rss.lemonde.fr/c/205/f/3050/index.rss');
-//parseAtomByEntry('https://github.com/zelenin/RSSGet/commits/master.atom');
+//parseRSSByEntry('http://rss.lemonde.fr/c/205/f/3050/index.rss');
+parseAtomByEntry('https://github.com/zelenin/RSSGet/commits/master.atom');
 
 ?>
 
@@ -38,7 +38,7 @@ parseRSSByEntry('https://news.google.com/news/feeds?pz=1&cf=all&ned=us&hl=en&top
                 $string = "<table style='width: 100%;'>";
                 foreach ($res as $entry)
                 {
-                    $string .= "<p>".$entry['entryTitle']."</p>".$entry['entryUpdatedDate']."<p>".$entry['entryContent']."</p>".$entry['entryUrl'];
+                    $string .= "<tr><td><h3>".$entry['entryTitle']."</h3></td></tr><tr><td><pre>".$entry['entryUpdatedDate']."</pre></td></tr><tr><td><h4>".html_entity_decode($entry['entryContent'])."</h4></td></tr>";
                 }
                 echo $string."</table>";
             ?>

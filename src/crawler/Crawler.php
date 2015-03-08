@@ -28,7 +28,7 @@ function parseRSSByEntry($pEntryUrl)
     $feed->save(Connection::getPDO());
 
     $items = $rssget_rss->getItems();
-    $items = Encoding::toUTF8($items);
+//    $items = Encoding::toUTF8($items);
     foreach ($items as $item)
     {
         $entry = new Entry();
@@ -57,7 +57,7 @@ function parseAtomByEntry($pEntryUrl)
     $feed->save(Connection::getPDO());
 
     $items = $rssget_atom->getItems();
-    $items = Encoding::toUTF8($items);
+//    $items = Encoding::toUTF8($items);
     foreach ($items as $item)
     {
         $entry = new Entry();
