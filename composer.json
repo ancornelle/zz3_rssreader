@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "silex/silex": "v1.2.3",
+    "silex/silex": "~1.2",
     "zelenin/rssget": "dev-master",
     "neitanod/forceutf8": "v1.4"
   },

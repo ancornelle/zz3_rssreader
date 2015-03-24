@@ -16,32 +16,32 @@ parseAtomByEntry('https://github.com/zelenin/RSSGet/commits/master.atom');
 ?>
 
 <html>
-    <body style="background: #EEEEEE; margin: 0;">
-        <div id="divCategory" style="float: left; margin: 0;">
-            <img  src="resources/logo.png" width="300" height="300"/>
-            <?php
-                $entry = new Entry();
-                $res = $entry->findAllCategory(Connection::getPDO());
-                $string = "<table style='width: 300px;'>";
-                $string .= "<tr><td>All Categories</td><td><input type='checkbox' checked='checked'/></td></tr>";
-                foreach ($res as $category)
-                {
-                    $string .= "<tr><td>".$category['entryCategory']."</td><td><input type='checkbox'/></td></tr>";
-                }
-                echo $string."</table>";
-            ?>
-        </div>
-        <div id="divFil" style="margin-left: 350px; padding-top: 30px;">
-            <?php
-                $entry = new Entry();
-                $res = $entry->findAll(Connection::getPDO());
-                $string = "<table style='width: 100%;'>";
-                foreach ($res as $entry)
-                {
-                    $string .= "<tr><td><h3>".$entry['entryTitle']."</h3></td></tr><tr><td><pre>".$entry['entryUpdatedDate']."</pre></td></tr><tr><td><h4>".html_entity_decode($entry['entryContent'])."</h4></td></tr>";
-                }
-                echo $string."</table>";
-            ?>
-        </div>
-    </body>
+<!--    <body style="background: #EEEEEE; margin: 0;">-->
+<!--        <div id="divCategory" style="float: left; margin: 0;">-->
+<!--            <img  src="resources/logo.png" width="300" height="300"/>-->
+<!--            --><?php
+//                $entry = new Entry();
+//                $res = $entry->findAllCategory(Connection::getPDO());
+//                $string = "<table style='width: 300px;'>";
+//                $string .= "<tr><td>All Categories</td><td><input type='checkbox' checked='checked'/></td></tr>";
+//                foreach ($res as $category)
+//                {
+//                    $string .= "<tr><td>".$category['entryCategory']."</td><td><input type='checkbox'/></td></tr>";
+//                }
+//                echo $string."</table>";
+//            ?>
+<!--        </div>-->
+<!--        <div id="divFil" style="margin-left: 350px; padding-top: 30px;">-->
+<!--            --><?php
+//                $entry = new Entry();
+//                $res = $entry->findAll(Connection::getPDO());
+//                $string = "<table style='width: 100%;'>";
+//                foreach ($res as $entry)
+//                {
+//                    $string .= "<tr><td><h3>".$entry['entryTitle']."</h3></td></tr><tr><td><pre>".$entry['entryUpdatedDate']."</pre></td></tr><tr><td><h4>".html_entity_decode($entry['entryContent'])."</h4></td></tr>";
+//                }
+//                echo $string."</table>";
+//            ?>
+<!--        </div>-->
+<!--    </body>-->
 </html>

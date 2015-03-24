@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body style="background: #EEEEEE; margin: 0;">
+    <span style="float: left;">
+    <div id="divFeed" style="margin: 0;">
+        <img  src="resources/logo.png" width="300" height="300"/>
+        <p style="margin: 10px 0px"><input id="inputFeedUrl" type="text" style="width:300px;"/></p>
+        <p style="margin: 10px 0px; width: 300px; text-align: center;"><input id="buttonAddFeed" type="button" value="Add Feed"/></p>
+    </div>
+    <div id="divCategory" style="margin: 0;">
+        <table style='width: 300px;'>
+            <tr>
+                <td>All Categories</td>
+                <td><input type='checkbox' checked='checked'/></td>
+            </tr>
+        <?php
+            foreach ($categories as $category)
+            {
+                echo $engine->render('CategoryDetail.html',['category' => $category]);
+            }
+        ?>
+        </table>
+
+    </div>
+    </span>
+    <div id="divFil" style="margin-left: 350px; padding-top: 30px;">
+        <table style='width: 100%;'>
+        <?php
+            foreach ($entries as $entry)
+            {
+                echo $engine->render('EntryDetail.html',['entry' => $entry]);
+            }
+        ?>
+        </table>
+    </div>
+</body>
+</html>
