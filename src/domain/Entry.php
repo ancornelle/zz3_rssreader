@@ -83,14 +83,14 @@ class Entry {
 
     public function findAll($pCon)
     {
-        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' LIMIT 20');
+        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' ORDER BY entryUpdatedDate DESC LIMIT 20');
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function findAllByFeedId($pCon, $pFeedId)
     {
-        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' WHERE entryFeed = :feed LIMIT 10');
+        $stmt = $pCon->prepare('SELECT * FROM '.self::tableName.' WHERE entryFeed = :feed ORDER BY entryUpdatedDate DESC LIMIT 10');
         $stmt->bindValue('feed',$pFeedId);
         $stmt->execute();
         return $stmt->fetchAll();

@@ -28,25 +28,33 @@ class Feed {
      */
     public $feedUpdatedDate;
 
+    /**
+     * String
+     * RSS or Atom feed
+     */
+    public $feedType;
+
     public function save(PDO $pCon)
     {
         if ($this->isNew($pCon))
         {
-            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' (feedId, feedTitle, feedDescription, feedUrl, feedUpdatedDate) VALUES (:id,:title,:description,:url,:date)');
+            $stmt = $pCon->prepare('INSERT INTO '.self::tableName.' (feedId, feedTitle, feedDescription, feedUrl, feedUpdatedDate, feedType) VALUES (:id,:title,:description,:url,:date,:type)');
             $stmt->bindValue('id',$this->feedId,PDO::PARAM_STR);
             $stmt->bindValue('title',$this->feedTitle,PDO::PARAM_STR);
             $stmt->bindValue('description',$this->feedDescription,PDO::PARAM_STR);
             $stmt->bindValue('url',$this->feedUrl,PDO::PARAM_STR);
             $stmt->bindValue('date',$this->feedUpdatedDate,PDO::PARAM_STR);
+            $stmt->bindValue('type',$this->feedType,PDO::PARAM_STR);
         }
         else
         {
-            $stmt = $pCon->prepare('UPDATE '.self::tableName.' SET feedTitle = :title, feedDescription = :description, feedUrl = :url, feedUpdatedDate = :date WHERE feedId = :id');
+            $stmt = $pCon->prepare('UPDATE '.self::tableName.' SET feedTitle = :title, feedDescription = :description, feedUrl = :url, feedUpdatedDate = :date, feedType = :type WHERE feedId = :id');
             $stmt->bindValue('id',$this->feedId);
             $stmt->bindValue('title',$this->feedTitle);
             $stmt->bindValue('description',$this->feedDescription);
             $stmt->bindValue('url',$this->feedUrl);
             $stmt->bindValue('date',$this->feedUpdatedDate);
+            $stmt->bindValue('type',$this->feedType,PDO::PARAM_STR);
         }
         return $stmt->execute();
     }

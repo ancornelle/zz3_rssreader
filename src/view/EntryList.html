@@ -1,3 +1,5 @@
+<?php require_once __DIR__.'/../../app/app.php'; ?>
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -8,8 +10,16 @@
     <span style="float: left;">
     <div id="divFeed" style="margin: 0;">
         <img  src="resources/logo.png" width="300" height="300"/>
-        <p style="margin: 10px 0px"><input id="inputFeedUrl" type="text" style="width:300px;"/></p>
-        <p style="margin: 10px 0px; width: 300px; text-align: center;"><input id="buttonAddFeed" type="button" value="Add Feed"/></p>
+        <form class="form-inline" action='/addFeed' name='add' method='post'>
+            <p style="margin: 10px 0px"><input  type="text" class="input-small" placeholder="Feed URL" name="inputRss" style="width:300px;"/></p>
+            <p style="margin: 10px 0px; width: 300px; text-align: center;">
+                <select name="inputType" style="width: 72%">
+                    <option id="RSS">RSS</option>
+                    <option id="Atom">Atom</option>
+                </select>
+                <button type="submit" class="btn" style="width: 25%">Add</button>
+            </p>
+        </form>
     </div>
     <div id="divCategory" style="margin: 0;">
         <table style='width: 300px;'>

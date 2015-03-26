@@ -2,14 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: Adrien
- * Date: 06/03/2015
- * Time: 14:36
+ * ConnectionTest class copied from Connection class with reference to test database
  */
+class ConnectionTest {
 
-
-class Connection {
-
-    const DB_NAME = "rssbdd";
+    const DB_NAME = "rssbdd_test";
 
     const DB_USER = "root";
 

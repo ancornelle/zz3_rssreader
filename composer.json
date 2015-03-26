@@ -5,14 +5,13 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "author's name",
-      "email": "email@example.com"
+      "name": "Someone",
+      "email": "somewhere@ibelong.com"
     }
   ],
   "require": {
     "silex/silex": "~1.2",
-    "zelenin/rssget": "dev-master",
-    "neitanod/forceutf8": "v1.4"
+    "zelenin/rssget": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "4.5.*"
